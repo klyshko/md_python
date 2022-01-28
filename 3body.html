@@ -3,6 +3,12 @@
 href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/
 css/font-awesome.min.css">
 <script language="javascript">
+  function isInternetExplorer() {
+    ua = navigator.userAgent;
+    /* MSIE used to detect old browsers and Trident used to newer ones*/
+    return ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1;
+  }
+
   /* Define the Animation class */
   function Animation(frames, img_id, slider_id, interval, loop_select_id){
     this.img_id = img_id;
@@ -19,7 +25,15 @@ css/font-awesome.min.css">
      this.frames[i] = new Image();
      this.frames[i].src = frames[i];
     }
-    document.getElementById(this.slider_id).max = this.frames.length - 1;
+    var slider = document.getElementById(this.slider_id);
+    slider.max = this.frames.length - 1;
+    if (isInternetExplorer()) {
+        // switch from oninput to onchange because IE <= 11 does not conform
+        // with W3C specification. It ignores oninput and onchange behaves
+        // like oninput. In contrast, Mircosoft Edge behaves correctly.
+        slider.setAttribute('onchange', slider.getAttribute('oninput'));
+        slider.setAttribute('oninput', null);
+    }
     this.set_frame(this.current_frame);
   }
 
@@ -143,37 +157,68 @@ css/font-awesome.min.css">
   }
 </script>
 
-<div class="animation" align="center">
-    <img id="_anim_img9f0cbd175c424b418202ae963c1c7152">
-    <br>
-    <input id="_anim_slider9f0cbd175c424b418202ae963c1c7152" type="range" style="width:350px"
+<style>
+.animation {
+    display: inline-block;
+    text-align: center;
+}
+input[type=range].anim-slider {
+    width: 374px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.anim-buttons {
+    margin: 8px 0px;
+}
+.anim-buttons button {
+    padding: 0;
+    width: 36px;
+}
+.anim-state label {
+    margin-right: 8px;
+}
+.anim-state input {
+    margin: 0;
+    vertical-align: middle;
+}
+</style>
+
+<div class="animation">
+  <img id="_anim_img4bc3dcc5fdce488c91f14c922435b724">
+  <div class="anim-controls">
+    <input id="_anim_slider4bc3dcc5fdce488c91f14c922435b724" type="range" class="anim-slider"
            name="points" min="0" max="1" step="1" value="0"
-           onchange="anim9f0cbd175c424b418202ae963c1c7152.set_frame(parseInt(this.value));"></input>
-    <br>
-    <button onclick="anim9f0cbd175c424b418202ae963c1c7152.slower()"><i class="fa fa-minus"></i></button>
-    <button onclick="anim9f0cbd175c424b418202ae963c1c7152.first_frame()"><i class="fa fa-fast-backward">
-        </i></button>
-    <button onclick="anim9f0cbd175c424b418202ae963c1c7152.previous_frame()">
-        <i class="fa fa-step-backward"></i></button>
-    <button onclick="anim9f0cbd175c424b418202ae963c1c7152.reverse_animation()">
-        <i class="fa fa-play fa-flip-horizontal"></i></button>
-    <button onclick="anim9f0cbd175c424b418202ae963c1c7152.pause_animation()"><i class="fa fa-pause">
-        </i></button>
-    <button onclick="anim9f0cbd175c424b418202ae963c1c7152.play_animation()"><i class="fa fa-play"></i>
-        </button>
-    <button onclick="anim9f0cbd175c424b418202ae963c1c7152.next_frame()"><i class="fa fa-step-forward">
-        </i></button>
-    <button onclick="anim9f0cbd175c424b418202ae963c1c7152.last_frame()"><i class="fa fa-fast-forward">
-        </i></button>
-    <button onclick="anim9f0cbd175c424b418202ae963c1c7152.faster()"><i class="fa fa-plus"></i></button>
-  <form action="#n" name="_anim_loop_select9f0cbd175c424b418202ae963c1c7152" class="anim_control">
-    <input type="radio" name="state"
-           value="once" > Once </input>
-    <input type="radio" name="state"
-           value="loop" checked> Loop </input>
-    <input type="radio" name="state"
-           value="reflect" > Reflect </input>
-  </form>
+           oninput="anim4bc3dcc5fdce488c91f14c922435b724.set_frame(parseInt(this.value));"></input>
+    <div class="anim-buttons">
+      <button onclick="anim4bc3dcc5fdce488c91f14c922435b724.slower()"><i class="fa fa-minus"></i></button>
+      <button onclick="anim4bc3dcc5fdce488c91f14c922435b724.first_frame()"><i class="fa fa-fast-backward">
+          </i></button>
+      <button onclick="anim4bc3dcc5fdce488c91f14c922435b724.previous_frame()">
+          <i class="fa fa-step-backward"></i></button>
+      <button onclick="anim4bc3dcc5fdce488c91f14c922435b724.reverse_animation()">
+          <i class="fa fa-play fa-flip-horizontal"></i></button>
+      <button onclick="anim4bc3dcc5fdce488c91f14c922435b724.pause_animation()"><i class="fa fa-pause">
+          </i></button>
+      <button onclick="anim4bc3dcc5fdce488c91f14c922435b724.play_animation()"><i class="fa fa-play"></i>
+          </button>
+      <button onclick="anim4bc3dcc5fdce488c91f14c922435b724.next_frame()"><i class="fa fa-step-forward">
+          </i></button>
+      <button onclick="anim4bc3dcc5fdce488c91f14c922435b724.last_frame()"><i class="fa fa-fast-forward">
+          </i></button>
+      <button onclick="anim4bc3dcc5fdce488c91f14c922435b724.faster()"><i class="fa fa-plus"></i></button>
+    </div>
+    <form action="#n" name="_anim_loop_select4bc3dcc5fdce488c91f14c922435b724" class="anim-state">
+      <input type="radio" name="state" value="once" id="_anim_radio1_4bc3dcc5fdce488c91f14c922435b724"
+             >
+      <label for="_anim_radio1_4bc3dcc5fdce488c91f14c922435b724">Once</label>
+      <input type="radio" name="state" value="loop" id="_anim_radio2_4bc3dcc5fdce488c91f14c922435b724"
+             checked>
+      <label for="_anim_radio2_4bc3dcc5fdce488c91f14c922435b724">Loop</label>
+      <input type="radio" name="state" value="reflect" id="_anim_radio3_4bc3dcc5fdce488c91f14c922435b724"
+             >
+      <label for="_anim_radio3_4bc3dcc5fdce488c91f14c922435b724">Reflect</label>
+    </form>
+  </div>
 </div>
 
 
@@ -181,9 +226,9 @@ css/font-awesome.min.css">
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
   (function() {
-    var img_id = "_anim_img9f0cbd175c424b418202ae963c1c7152";
-    var slider_id = "_anim_slider9f0cbd175c424b418202ae963c1c7152";
-    var loop_select_id = "_anim_loop_select9f0cbd175c424b418202ae963c1c7152";
+    var img_id = "_anim_img4bc3dcc5fdce488c91f14c922435b724";
+    var slider_id = "_anim_slider4bc3dcc5fdce488c91f14c922435b724";
+    var loop_select_id = "_anim_loop_select4bc3dcc5fdce488c91f14c922435b724";
     var frames = new Array(200);
     
   for (var i=0; i<200; i++){
@@ -195,7 +240,7 @@ css/font-awesome.min.css">
     /* set a timeout to make sure all the above elements are created before
        the object is initialized. */
     setTimeout(function() {
-        anim9f0cbd175c424b418202ae963c1c7152 = new Animation(frames, img_id, slider_id, 52.0,
+        anim4bc3dcc5fdce488c91f14c922435b724 = new Animation(frames, img_id, slider_id, 52.0,
                                  loop_select_id);
     }, 0);
   })()
